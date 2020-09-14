@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Built-By: luis.pastre
+Build-Jdk: 1.8.0_221
+Class-Path: lib/lombok-1.18.12.jar lib/logback-classic-1.2.3.jar lib/l
+ ogback-core-1.2.3.jar lib/slf4j-api-1.7.25.jar
+Main-Class: com.agibank.startup.Start
+Created-By: Maven Integration for Eclipse
+
