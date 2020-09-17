@@ -3,6 +3,9 @@ package com.agibank.startup;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import com.agibank.exception.PathOfFilesNotFoundException;
 import com.agibank.reader.Reader;
 import com.agibank.util.AgilebankConstants;
 
@@ -15,9 +18,15 @@ public class Start implements AgilebankConstants {
 		log.debug("Processo de leitura de arquivo iniciado.");
 
 		try {
+			
+			String homePath = System.getenv("HOMEPATH") + INPUT_PATH;
+			File file = new File(homePath);
+			if(!file.exists()) {
+				throw new PathOfFilesNotFoundException("Caminho de arquivos não encontrado. " + homePath);
+			}
+
 			while (true) {
-				String homePath = System.getenv("HOMEPATH") + INPUT_PATH;
-				File file = new File(homePath);
+				
 				for (String pathname : file.list(new FilenameFilter() {
 							@Override
 							public boolean accept(File dir, String name) {
@@ -33,7 +42,7 @@ public class Start implements AgilebankConstants {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(ExceptionUtils.getStackTrace(e));
 		}
 		log.debug("Processo de leitura de arquivo finalizado.");
 

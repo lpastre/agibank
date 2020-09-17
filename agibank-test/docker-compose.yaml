@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+  agibank:
+   build: .
+   container_name: agibank
+   image: agibank:v1
+   restart: always

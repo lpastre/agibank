@@ -66,7 +66,7 @@ public class Reader implements Runnable, AgilebankConstants {
 			log.error(e.getMessage());
 		}
 
-		log.debug("Leitura do arquivo de entrada concluída" + filename);
+		log.debug("Leitura do arquivo de entrada concluida - " + filename);
 	}
 
 }
