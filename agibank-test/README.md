@@ -38,4 +38,4 @@ Technologies: Java 13, Maven, Lombok
 
 # Docker Execute
 * Compile o projeto
-* Execute o comando na pasta raiz do projeto: docker-compose up -d  
+* Execute o comando na pasta raiz do projeto: docker-compose up OU docker-compose up -d (como background)  

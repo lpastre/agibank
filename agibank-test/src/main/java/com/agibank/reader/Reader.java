@@ -3,6 +3,9 @@ package com.agibank.reader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.agibank.obj.Customer;
 import com.agibank.obj.ObjectBase;
 import com.agibank.obj.Sale;
@@ -11,21 +14,27 @@ import com.agibank.process.ProcessObject;
 import com.agibank.util.AgilebankConstants;
 import com.agibank.util.Mapper;
 import com.agibank.writer.Writer;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class Reader implements Runnable, AgilebankConstants {
 
 	private String filename;
-
+	private ProcessObject processObject;
+	
+	public Reader(String filename) {
+		this.filename = filename;
+	}
+	
 	@Override
 	public void run() {
 		readFile();
-
+		writeFile();
 	}
 
 	private void readFile() {
@@ -34,7 +43,7 @@ public class Reader implements Runnable, AgilebankConstants {
 		try (BufferedReader objReader = new BufferedReader(
 				new FileReader(homePath + "/" + filename + SUFIX_READED, StandardCharsets.UTF_8))) {
 
-			ProcessObject processObject = new ProcessObject();
+			processObject = new ProcessObject();
 			String contentLine = objReader.readLine();
 			while (contentLine != null) {
 				try {
@@ -58,15 +67,19 @@ public class Reader implements Runnable, AgilebankConstants {
 				}
 			}
 
-			Writer writeFile = new Writer(filename, processObject.getResultObject());
-			Thread threadWriteFile = new Thread(writeFile);
-			threadWriteFile.start();
-
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(ExceptionUtils.getStackTrace(e));
 		}
 
 		log.debug("Leitura do arquivo de entrada concluida - " + filename);
+	}
+	
+	private void writeFile() {
+		log.debug("Lendo o arquivo de entrada - " + filename);
+		Writer writeFile = new Writer(filename, processObject.getResultObject());
+		Thread threadWriteFile = new Thread(writeFile);
+		threadWriteFile.start();
+
 	}
 
 }

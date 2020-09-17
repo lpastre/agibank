@@ -33,13 +33,17 @@ public class Start implements AgilebankConstants {
 								return name.toLowerCase().endsWith(FILE_EXTENSION);
 							}
 						})) {
-
+					
 					File oldFile = new File(homePath + "/" + pathname);
 					oldFile.renameTo(new File(homePath + "/" + pathname + SUFIX_READED));
+					
+					
 					Reader readerFile = new Reader(pathname);
 					Thread threadReaderFile = new Thread(readerFile);
 					threadReaderFile.start();
+					
 				}
+				Thread.currentThread().sleep(1000L);
 			}
 		} catch (Exception e) {
 			log.error(ExceptionUtils.getStackTrace(e));

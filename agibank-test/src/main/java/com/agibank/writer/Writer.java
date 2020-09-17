@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.agibank.obj.ResultObject;
 import com.agibank.util.AgilebankConstants;
 
@@ -25,15 +27,16 @@ public class Writer implements Runnable, AgilebankConstants{
 		try {
 			writeFile();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 
 	
 	private void writeFile() throws Exception {
 		log.debug("Escrevendo ao arquivo de saída - " + filename);
-		String homePath = System.getenv("HOMEPATH") + OUPUT_PATH;
-		
+		String homePath = System.getenv("HOMEPATH") + OUTPUT_PATH;
+		File fileOut = new File(homePath);
+		fileOut.mkdir();
 		try (BufferedWriter objWriter = new BufferedWriter(new FileWriter(homePath + "/" + 
 													filename.substring(0, filename.length()-4) + SUFIX_DONE + FILE_EXTENSION, StandardCharsets.UTF_8))) {
 			objWriter.write(resultObject.toString());

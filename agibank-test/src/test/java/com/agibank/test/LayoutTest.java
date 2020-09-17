@@ -2,6 +2,8 @@ package com.agibank.test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Test;
 import com.agibank.obj.Customer;
 import com.agibank.obj.Sale;
@@ -41,7 +43,7 @@ public class LayoutTest {
 			Sale obj = (Sale)Mapper.convertToObject("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çPaulo");
 		} catch (Exception e) {
 			
-			fail(e.getMessage());
+			fail(ExceptionUtils.getStackTrace(e));
 		}
 		assertTrue(true);
 	}
